@@ -21,6 +21,15 @@ const App = () => {
 
   // Actions
   const checkIfWalletIsConnected = async () => {
+    const checkNetwork = async () => {
+      try {
+        if (window.ethereum.networkVersion !== "4") {
+          alert("Please connect to Rinkeby!");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     try {
       const { ethereum } = window;
 
@@ -44,6 +53,7 @@ const App = () => {
           console.log("No authorized account found");
         }
       }
+      checkNetwork();
     } catch (error) {
       console.log(error);
     }
@@ -112,35 +122,8 @@ const App = () => {
     }
   };
 
-  const checkNetwork = async () => {
-    try {
-      if (window.ethereum.networkVersion !== "4") {
-        alert("Please connect to Rinkeby!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  
 
-  const fetchNFTMetadata = async () => {
-    console.log("Checking for Character NFT on address:", currentAccount);
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const gameContract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      myEpicGame.abi,
-      signer
-    );
-
-    const txn = await gameContract.checkIfUserHasNFT();
-    if (txn.name) {
-      console.log("User has character NFT");
-      setCharacterNFT(transformCharacterData(txn));
-    } else {
-      console.log("No character NFT found");
-    }
-  };
 
   // UseEffects
   useEffect(() => {
@@ -152,6 +135,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    
     const fetchNFTMetadata = async () => {
       console.log("Checking for Character NFT on address:", currentAccount);
 

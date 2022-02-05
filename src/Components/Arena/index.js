@@ -94,7 +94,7 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
          gameContract.off("AttackComplete", onAttackComplete);
        }
      };
-   }, [gameContract]);
+   }, [gameContract, setCharacterNFT]);
 
   // Actions
 
